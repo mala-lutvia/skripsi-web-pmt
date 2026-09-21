@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Input Prediksi — Skripsi PMT</title>
+<link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="brand">
+      <img src="{{ url_for('static', path='assets/logo.png') }}" alt="Logo Politeknik Statistika STIS">
+      <div class="brand-text">
+        <span class="brand-title">Skripsi Proxy Means Test (PMT)</span>
+        <span class="brand-sub">Lutvia Rahma Kumala &middot; 2026</span>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="/#beranda">Beranda</a>
+      <a href="/#metodologi">Metodologi</a>
+      <a href="/prediksi">Prediksi</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-head container">
+  <span class="eyebrow on-light">INPUT PREDIKSI</span>
+  <h1>Estimasi kesejahteraan rumah tangga</h1>
+  <p>Masukkan karakteristik rumah tangga untuk membentuk fitur yang digunakan dalam estimasi.</p>
+
+  <div class="progress-steps">
+    <div class="progress-step active" data-step="1"><span class="n">1</span> Wilayah</div>
+    <div class="progress-step" data-step="2"><span class="n">2</span> Anggota rumah tangga</div>
+    <div class="progress-step" data-step="3"><span class="n">3</span> Kondisi tempat tinggal</div>
+    <div class="progress-step" data-step="4"><span class="n">4</span> Aset rumah tangga</div>
+  </div>
+</div>
+
+<form id="prediksi-form" class="container">
+  <div class="form-error" id="form-error"></div>
+
+  <!-- 01 Wilayah -->
+  <div class="form-section">
+    <div class="form-section-head">
+      <span class="idx">01</span>
+      <h3>Wilayah</h3>
+    </div>
+    <div class="field-grid cols-1">
+      <div class="field">
+        <label for="region">Kabupaten/kota</label>
+        <select id="region" name="region">
+          <option value="" disabled selected>Pilih kabupaten/kota</option>
+          {% for k in kab_options %}
+          <option value="{{ k.value }}">{{ k.label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 Anggota rumah tangga -->
+  <div class="form-section">
+    <div class="form-section-head">
+      <img src="{{ url_for('static', path='assets/asset_family.png') }}" alt="">
+      <h3>Anggota rumah tangga</h3>
+      <span class="hint">Tepat 1 kepala rumah tangga</span>
+    </div>
+    <div class="member-controls">
+      <div class="stepper">
+        <button type="button" id="member-minus">&minus;</button>
+        <span class="count" id="member-count">1</span>
+        <button type="button" id="member-plus">&plus;</button>
+      </div>
+      <span class="label">anggota rumah tangga</span>
+    </div>
+    <div id="member-cards"></div>
+  </div>
+
+  <!-- 03 Kondisi tempat tinggal -->
+  <div class="form-section">
+    <div class="form-section-head">
+      <img src="{{ url_for('static', path='assets/asset_building.png') }}" alt="">
+      <h3>Kondisi tempat tinggal</h3>
+    </div>
+
+    <div class="field-grid" style="margin-bottom:18px;">
+      <div class="field">
+        <label for="floor_area">Luas lantai (m&sup2;)</label>
+        <input type="number" id="floor_area" name="floor_area" min="0" step="0.1" placeholder="cth. 60" required>
+      </div>
+      <div class="field">
+        <label for="family_count">Jumlah keluarga dalam rumah tangga</label>
+        <input type="number" id="family_count" name="family_count" min="1" step="1" placeholder="cth. 1" required>
+      </div>
+      <div class="field">
+        <label for="house_type">Jenis rumah</label>
+        <select id="house_type" name="house_type" required>
+          {% for o in opts.house_type %}<option value="{{ o.value }}">{{ o.label }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="water_source">Sumber air minum</label>
+        <select id="water_source" name="water_source" required>
+          {% for o in opts.water_source %}<option value="{{ o.value }}">{{ o.label }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="lighting_source">Sumber penerangan</label>
+        <select id="lighting_source" name="lighting_source" required>
+          {% for o in opts.lighting_source %}<option value="{{ o.value }}">{{ o.label }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="electric_power">Daya listrik</label>
+        <select id="electric_power" name="electric_power" required>
+          {% for o in opts.electric_power %}<option value="{{ o.value }}">{{ o.label }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="cooking_fuel">Bahan bakar memasak</label>
+        <select id="cooking_fuel" name="cooking_fuel" required>
+          {% for o in opts.cooking_fuel %}<option value="{{ o.value }}">{{ o.label }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="toilet_type">Jenis toilet</label>
+        <select id="toilet_type" name="toilet_type" required>
+          {% for o in opts.toilet_type %}<option value="{{ o.value }}">{{ o.label }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="septic_type">Septic tank / pembuangan akhir tinja</label>
+        <select id="septic_type" name="septic_type" required>
+          {% for o in opts.septic_type %}<option value="{{ o.value }}">{{ o.label }}</option>{% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="field" style="margin-bottom:14px;">
+      <label>Kualitas Material Lantai</label>
+      <div class="material-grid">
+        {% for o in opts.floor_type %}
+        <label class="material-chip">
+          <input type="radio" name="floor_type" value="{{ o.value }}" {% if loop.first %}checked{% endif %} required>
+          <span><span class="swatch" style="background:{{ o.color }};"></span>{{ o.label }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="field" style="margin-bottom:14px;">
+      <label>Kualitas Material Dinding</label>
+      <div class="material-grid">
+        {% for o in opts.wall_type %}
+        <label class="material-chip">
+          <input type="radio" name="wall_type" value="{{ o.value }}" {% if loop.first %}checked{% endif %} required>
+          <span><span class="swatch" style="background:{{ o.color }};"></span>{{ o.label }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Kualitas Material Atap</label>
+      <div class="material-grid">
+        {% for o in opts.roof_type %}
+        <label class="material-chip">
+          <input type="radio" name="roof_type" value="{{ o.value }}" {% if loop.first %}checked{% endif %} required>
+          <span><span class="swatch" style="background:{{ o.color }};"></span>{{ o.label }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 Aset rumah tangga -->
+  <div class="form-section">
+    <div class="form-section-head">
+      <img src="{{ url_for('static', path='assets/asset_household_assets.png') }}" alt="">
+      <h3>Aset rumah tangga</h3>
+      <span class="hint">Pilih yang dimiliki</span>
+    </div>
+    <div class="asset-grid">
+      {% for o in opts.assets %}
+      <label class="asset-chip">
+        <input type="checkbox" name="assets" value="{{ o.value }}">
+        <span>{{ o.label }}</span>
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="summary-card" id="summary-card">
+    <h3>Ringkasan sebelum submit</h3>
+    <div id="summary-body"></div>
+  </div>
+
+  <div class="form-footer" style="display:flex; gap:12px;">
+    <button type="button" class="btn btn-outline" id="btn-review" style="flex:1;">Periksa kembali</button>
+    <button type="submit" class="btn btn-navy" id="submit-btn" style="flex:2;">Jalankan estimasi</button>
+  </div>
+</form>
+
+</form>
+
+<section id="hasil" class="container" style="padding-top:10px;">
+  <div class="section-head">
+    <span class="eyebrow on-light">HASIL</span>
+    <h2>Estimasi kesejahteraan rumah tangga</h2>
+    <p>
+      Data tadi diproses oleh model yang sudah dilatih, lalu hasilnya digunakan untuk membuat estimasi.
+    </p>
+  </div>
+
+  <div
+    class="hasil-wrap"
+    id="hasil-wrap"
+    style="max-width:720px; margin:0 auto 60px; display:none;"
+  >
+
+    <p
+      class="hasil-kab"
+      style="text-align:center; color:var(--secondary); font-size:13.5px; margin-bottom:20px;"
+    >
+      Kabupaten/kota &mdash;
+      <b id="hasil-kab-name" style="color:var(--navy);"></b>
+    </p>
+
+    <div id="hasil-error" class="form-error" style="display:none;"></div>
+
+    <div
+      class="hasil-cards"
+      style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px;"
+    >
+
+      <!-- SINGLE-STAGE -->
+      <div
+        class="result-card"
+        id="card-single"
+        style="
+          background:var(--card);
+          border:1px solid var(--border);
+          border-radius:var(--radius-lg);
+          padding:24px 20px;
+          text-align:center;
+          position:relative;
+        "
+      >
+        <div
+          style="
+            font-size:11px;
+            letter-spacing:.08em;
+            color:var(--secondary);
+            font-weight:700;
+            margin-bottom:10px;
+          "
+        >
+          SINGLE-STAGE
+        </div>
+
+        <div
+          id="rp-single"
+          style="
+            font-size:24px;
+            font-weight:700;
+            color:var(--navy);
+            font-family:'Poppins',sans-serif;
+          "
+        >
+          &mdash;
+        </div>
+
+        <div
+          style="
+            font-size:12px;
+            color:var(--secondary);
+            margin-top:6px;
+          "
+        >
+          Model tunggal
+        </div>
+      </div>
+
+      <!-- TWO-STAGE -->
+      <div
+        class="result-card"
+        id="card-two"
+        style="
+          background:var(--card);
+          border:2px solid var(--navy);
+          border-radius:var(--radius-lg);
+          padding:24px 20px;
+          text-align:center;
+          position:relative;
+        "
+      >
+
+        <span
+          id="badge-final"
+          style="
+            display:none;
+            position:absolute;
+            top:-13px;
+            left:50%;
+            transform:translateX(-50%);
+            background:var(--navy);
+            color:#fff;
+            font-size:10px;
+            font-weight:600;
+            padding:6px 14px;
+            border-radius:999px;
+            white-space:nowrap;
+          "
+        >
+          Digunakan sebagai estimasi akhir
+        </span>
+
+        <div
+          style="
+            font-size:11px;
+            letter-spacing:.08em;
+            color:var(--secondary);
+            font-weight:700;
+            margin-bottom:10px;
+          "
+        >
+          TWO-STAGE
+        </div>
+
+        <div
+          id="rp-two"
+          style="
+            font-size:24px;
+            font-weight:700;
+            color:var(--navy);
+            font-family:'Poppins',sans-serif;
+          "
+        >
+          &mdash;
+        </div>
+
+        <div
+          style="
+            font-size:12px;
+            color:var(--secondary);
+            margin-top:6px;
+          "
+        >
+          Logistic Regression &rarr; XGBoost
+        </div>
+      </div>
+    </div>
+
+    <!-- PROBABILITAS RENTAN -->
+    <div
+      class="gauge-card"
+      style="
+        background:var(--card);
+        border:1px solid var(--border);
+        border-radius:var(--radius-lg);
+        padding:26px 20px;
+        text-align:center;
+      "
+    >
+
+      <h4
+        style="
+          font-size:14.5px;
+          font-weight:600;
+          color:var(--navy);
+          margin:0 0 4px;
+        "
+      >
+        Probabilitas rentan
+      </h4>
+
+      <p
+        style="
+          font-size:12px;
+          color:var(--secondary);
+          margin:0 0 10px;
+        "
+      >
+        Keluaran Tahap 1 (Logistic Regression),
+        dipakai sebagai fitur tambahan di Tahap 2
+      </p>
+
+      <svg
+        id="gauge-svg"
+        width="180"
+        height="100"
+        viewBox="0 0 180 100"
+      >
+        <path
+          d="M 20 90 A 70 70 0 1 1 160 90"
+          fill="none"
+          stroke="#DCE3EA"
+          stroke-width="14"
+          stroke-linecap="round"
+        />
+
+        <path
+          id="gauge-fill"
+          d=""
+          fill="none"
+          stroke="#D8894A"
+          stroke-width="14"
+          stroke-linecap="round"
+        />
+      </svg>
+
+      <div
+        id="gauge-pct"
+        style="
+          font-size:28px;
+          font-weight:700;
+          color:var(--orange);
+        "
+      >
+        &mdash;
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEVELOPMENT DEBUG -->
+<div class="debug-panel" id="debug-panel">
+
+  <span class="debug-badge">Development debug</span>
+
+  <h3>Preprocessing &amp; prediksi berhasil</h3>
+
+  <p class="n-features">
+    Feature vector berhasil dibuat &middot;
+    Jumlah fitur:
+    <b id="debug-n-features">0</b>
+  </p>
+
+  <table class="debug-table">
+    <thead>
+      <tr>
+        <th>Nama fitur</th>
+        <th style="text-align:right;">Nilai</th>
+      </tr>
+    </thead>
+
+    <tbody id="debug-table-body"></tbody>
+  </table>
+
+  <h3 style="margin-top:24px;">Model debug</h3>
+
+  <pre
+    id="debug-model-json"
+    style="
+      font-size:11.5px;
+      background:var(--bg);
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:14px;
+      overflow-x:auto;
+      white-space:pre-wrap;
+    "
+  ></pre>
+
+</div>
+
+<footer>
+  <div class="container">
+    Skripsi Proxy Means Test (PMT) &middot; Lutvia Rahma Kumala &middot; 2026
+  </div>
+</footer>
+
+<script id="form-mappings" type="application/json">{{ opts | tojson }}</script>
+<script src="{{ url_for('static', path='js/form.js') }}"></script>
+</body>
+</html>

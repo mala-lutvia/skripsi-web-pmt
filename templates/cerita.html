@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cerita Singkat — Skripsi PMT</title>
+<link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="brand">
+      <img src="{{ url_for('static', path='assets/logo.png') }}" alt="Logo Politeknik Statistika STIS">
+      <div class="brand-text">
+        <span class="brand-title">Skripsi Proxy Means Test (PMT)</span>
+        <span class="brand-sub">Lutvia Rahma Kumala &middot; 2026</span>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="/#beranda">Beranda</a>
+      <a href="/#metodologi">Metodologi</a>
+      <a href="/prediksi">Prediksi</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="story-hero">
+    <span class="eyebrow on-light">SEBELUM MULAI</span>
+    <h1>Kenalan dulu, yuk</h1>
+    <p>Sedikit cerita tentang Proxy Means Test sebelum kamu coba hitung estimasinya sendiri.</p>
+  </div>
+
+  <div class="story-shell">
+    <div class="story-card" id="storyCard">
+      <!-- chat messages injected by JS -->
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    Skripsi Proxy Means Test (PMT) &middot; Lutvia Rahma Kumala &middot; 2026
+  </div>
+</footer>
+
+<script>
+const AVATAR = "{{ url_for('static', path='assets/avatar_lutvia.png') }}";
+
+const script = [
+  { from: "bot", text: "Halo! Saya Lutvia. Pernah kepikiran nggak, gimana caranya mengetahui kondisi ekonomi sebuah rumah tangga kalau penghasilannya nggak mudah diketahui?" },
+  { from: "user", text: "Belum. Gimana??" },
+  { from: "bot", text: "Nah, di situ PMT digunakan. PMT atau Proxy Means Test memperkirakan tingkat kesejahteraan rumah tangga dari karakteristik yang bisa diamati." },
+  { from: "bot", text: "Jadi bukan cuma lihat pendapatan. Informasi seperti jumlah anggota keluarga, pendidikan, kondisi rumah, fasilitas dasar, sampai kepemilikan aset ikut diperhitungkan." },
+  { from: "bot", text: "Kenapa nggak langsung pakai pendapatan? Karena sampai sekarang belum ada basis data pendapatan atau pengeluaran yang mencakup semua rumah tangga. Data administrasi juga belum tentu menangkap semua orang, terutama yang bekerja di sektor informal." },
+  { from: "bot", text: "Sederhananya, PMT mencoba menjawab: dari kondisi rumah tangga yang terlihat, kira-kira bagaimana tingkat kesejahteraannya?" },
+  { from: "bot", text: "Sekarang coba isi karakteristik rumah tanggamu. Dari informasi itu, sistem akan membuat estimasi pengeluarannya." },
+];
+
+const card = document.getElementById("storyCard");
+let step = 0;
+
+function renderRow(msg) {
+  const row = document.createElement("div");
+  row.className = "chat-row" + (msg.from === "user" ? " user" : "");
+
+  if (msg.from === "bot") {
+    const img = document.createElement("img");
+    img.src = AVATAR;
+    img.alt = "Lutvia";
+    img.className = "chat-avatar";
+    row.appendChild(img);
+  }
+
+  const bubble = document.createElement("div");
+  bubble.className = "bubble " + (msg.from === "user" ? "bubble-user" : "bubble-bot");
+  bubble.textContent = msg.text;
+  row.appendChild(bubble);
+
+  card.appendChild(row);
+}
+
+function renderContinueHint() {
+  const hint = document.createElement("div");
+  hint.className = "chat-continue";
+  hint.id = "continueHint";
+  hint.textContent = "(Klik untuk lanjut...)";
+  hint.addEventListener("click", advance);
+  card.appendChild(hint);
+}
+
+function renderCTA() {
+  const cta = document.createElement("div");
+  cta.className = "story-cta";
+  cta.innerHTML = '<p>Siap coba hitung estimasinya?</p><a href="/prediksi" class="btn btn-orange">Mulai Prediksi</a>';
+  card.appendChild(cta);
+}
+
+function advance() {
+  const hint = document.getElementById("continueHint");
+  if (hint) hint.remove();
+
+  if (step < script.length) {
+    renderRow(script[step]);
+    step++;
+    if (step < script.length) {
+      renderContinueHint();
+    } else {
+      renderCTA();
+    }
+    card.scrollTop = card.scrollHeight;
+  }
+}
+
+// kick things off
+advance();
+</script>
+
+</body>
+</html>

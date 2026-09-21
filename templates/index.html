@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skripsi Proxy Means Test (PMT)</title>
+<link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="brand">
+      <img src="{{ url_for('static', path='assets/logo.png') }}" alt="Logo Politeknik Statistika STIS">
+      <div class="brand-text">
+        <span class="brand-title">Skripsi Proxy Means Test (PMT)</span>
+        <span class="brand-sub">Lutvia Rahma Kumala &middot; 2026</span>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="#beranda">Beranda</a>
+      <a href="#metodologi">Metodologi</a>
+      <a href="/prediksi">Prediksi</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="beranda">
+  <div class="hero-bg"></div>
+  <div class="hero-scrim"></div>
+  <div class="container">
+    <span class="eyebrow">PEMODELAN KESEJAHTERAAN RUMAH TANGGA</span>
+    <h1>Pemodelan Proxy Means Test Berbasis Two-Stage Machine Learning</h1>
+    <p class="lead">Proxy Means Test merupakan pemodelan yang didasarkan pada karakteristik sosial ekonomi yang mudah diamati dan sulit untuk dimanipulasi, untuk estimasi tingkat kesejahteraan rumah tangga.</p>
+    <a href="/cerita" class="btn btn-orange">Mulai Prediksi</a>
+  </div>
+</header>
+
+<div class="container">
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="value">97</div>
+      <div class="label">Variabel Prediktor</div>
+    </div>
+    <div class="stat-card">
+      <div class="value">2</div>
+      <div class="label">Stage Pemodelan</div>
+    </div>
+    <div class="stat-card">
+      <div class="value">2</div>
+      <div class="label">Algoritma Machine Learning</div>
+    </div>
+  </div>
+</div>
+
+<section id="metodologi">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow on-light">METODOLOGI</span>
+      <h2>Bagaimana model bekerja?</h2>
+      <p>Dari data rumah tangga menuju estimasi kesejahteraan, lewat pemodelan yang dapat dibandingkan dalam dua arsitektur.</p>
+    </div>
+
+    <!-- Model Architecture Toggle -->
+<div class="method-card">
+
+  <div class="stage-toggle">
+    <button type="button" class="stage-btn active" data-stage="single">
+      Single-Stage
+    </button>
+
+    <button type="button" class="stage-btn" data-stage="two">
+      Two-Stage
+    </button>
+  </div>
+
+
+  <!-- SINGLE-STAGE -->
+
+  <div class="method-illustration stage-content active" id="stage-single">
+
+    <div class="method-box">
+      <div class="tag">INPUT</div>
+      <div class="name">97 variabel</div>
+    </div>
+
+    <span class="arrow">&rarr;</span>
+
+    <div class="method-box active-stage">
+      <div class="tag">ESTIMASI</div>
+      <div class="name">XGBoost</div>
+      <div class="out">Rp xxx</div>
+    </div>
+
+  </div>
+
+
+  <!-- TWO-STAGE -->
+
+  <div class="method-illustration stage-content" id="stage-two">
+
+    <div class="method-box">
+      <div class="tag">INPUT</div>
+      <div class="name">97 variabel</div>
+    </div>
+
+    <span class="arrow">&rarr;</span>
+
+    <div class="method-box">
+      <div class="tag">TAHAP 1 · KLASIFIKASI</div>
+      <div class="name">Logistic Regression</div>
+      <div class="out">p_rentan</div>
+    </div>
+
+    <span class="arrow">&rarr;</span>
+
+    <div class="method-box active-stage">
+      <div class="tag">TAHAP 2 · ESTIMASI</div>
+      <div class="name">XGBoost</div>
+      <div class="out">Rp xxx</div>
+    </div>
+
+  </div>
+
+</div>
+
+    <div class="section-head" style="margin-top:56px; margin-bottom:20px;">
+      <h2 style="font-size:19px;">Apa yang masuk?</h2>
+    </div>
+    <div class="input-grid">
+      <div class="input-pill"><img src="{{ url_for('static', path='assets/asset_family.png') }}" alt="">Demografi</div>
+      <div class="input-pill"><img src="{{ url_for('static', path='assets/asset_education.png') }}" alt="">Pendidikan</div>
+      <div class="input-pill"><img src="{{ url_for('static', path='assets/asset_infrastructure.png') }}" alt="">Infrastruktur Dasar</div>
+      <div class="input-pill"><img src="{{ url_for('static', path='assets/asset_household_assets.png') }}" alt="">Aset</div>
+      <div class="input-pill"><img src="{{ url_for('static', path='assets/asset_ekonomi.png') }}" alt="">Aktivitas Ekonomi</div>
+      <div class="input-pill"><img src="{{ url_for('static', path='assets/asset_building.png') }}" alt="">Kondisi rumah</div>
+    </div>
+
+    <div class="cta-band">
+      <h3>Siap coba hitung estimasinya?</h3>
+      <p>Isi karakteristik rumah tangga, sistem akan membentuk 97 fitur secara otomatis.</p>
+      <a href="/cerita" class="btn btn-orange">Mulai Prediksi</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    Skripsi Proxy Means Test (PMT) &middot; Lutvia Rahma Kumala &middot; 2026
+  </div>
+</footer>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const buttons = document.querySelectorAll(".stage-btn");
+  const contents = document.querySelectorAll(".stage-content");
+
+  buttons.forEach(button => {
+    button.addEventListener("click", function () {
+      const stage = this.dataset.stage;
+
+      buttons.forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      this.classList.add("active");
+
+      contents.forEach(content => {
+        content.classList.remove("active");
+      });
+
+      document
+        .getElementById("stage-" + stage)
+        .classList.add("active");
+    });
+  });
+});
+</script>
+</body>
+</html>
