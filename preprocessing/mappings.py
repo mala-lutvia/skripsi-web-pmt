@@ -63,7 +63,7 @@ SCHOOL_STATUS_MAPPING = [
 
 MARITAL_STATUS_MAPPING = [
     {"value": "h_notmarried", "label": "Belum kawin"},
-    {"value": "h_married", "label": "Menikah"},
+    {"value": "h_married", "label": "Kawin"},
     {"value": "h_divorced", "label": "Cerai hidup"},
     {"value": "h_widowed", "label": "Cerai mati"},
 ]
