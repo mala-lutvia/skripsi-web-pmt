@@ -169,7 +169,7 @@ SEPTIC_MAPPING = [
 
 _flag("aset_internet (ada di training, tidak ada di BASE_PREDICTORS)")
 ASSET_MAPPING = [
-    {"value": "h_asset_lpg5kg", "label": "LPG"},
+    {"value": "h_asset_lpg5kg", "label": "LPG ≥ 5,5 kg"},
     {"value": "h_asset_fridge", "label": "Kulkas"},
     {"value": "h_asset_ac", "label": "AC"},
     {"value": "h_asset_wheater", "label": "Water heater"},
