@@ -79,6 +79,7 @@ function renderMemberCard(index) {
   const sectorSelect = wrap.querySelector('.m-sector');
 
   const ageInput = wrap.querySelector('.m-age');
+  const employmentField = empSelect.closest('.field');
   const schoolSelect = wrap.querySelector('.m-school');
   const schoolField = schoolSelect.closest('.field');
   const educationSelect = wrap.querySelector('.m-education');
@@ -104,6 +105,24 @@ function renderMemberCard(index) {
 
   updateSchoolVisibility();
 
+  function updateEmploymentVisibility() {
+  const age = parseInt(ageInput.value, 10);
+  const showEmployment = Number.isFinite(age) && age >= 10;
+
+  employmentField.style.display = showEmployment ? '' : 'none';
+  empSelect.disabled = !showEmployment;
+
+  if (!showEmployment) {
+    empSelect.value = '';
+    sectorSelect.value = '';
+    sectorField.style.display = 'none';
+    sectorSelect.disabled = true;
+  } else {
+    empSelect.disabled = false;
+    updateSectorVisibility();
+  }
+}
+
   function updateSectorVisibility() {
     const notWorking =
       empSelect.value === '0' ||
@@ -112,14 +131,18 @@ function renderMemberCard(index) {
     if (notWorking) {
       sectorField.style.display = 'none';
       sectorSelect.value = '';
+      sectorSelect.disabled = true;
     } else {
       sectorField.style.display = 'flex';
+      sectorSelect.disabled = false;
     }
   }
 
+  ageInput.addEventListener('input', updateEmploymentVisibility);
+  ageInput.addEventListener('change', updateEmploymentVisibility);
   empSelect.addEventListener('change', updateSectorVisibility);
 
-  updateSectorVisibility();
+  updateEmploymentVisibility();
 
   return wrap;
 }
@@ -200,7 +223,7 @@ function buildPayload() {
       school_status: d.school_status,
       marital_status: d.marital_status,
       employment_status:
-        !d.employment_status || d.employment_status === '0'
+         d.employment_status == null
           ? null
           : parseInt(d.employment_status, 10),
       employment_sector: d.employment_sector ? parseInt(d.employment_sector, 10) : null,
