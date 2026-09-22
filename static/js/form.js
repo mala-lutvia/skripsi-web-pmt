@@ -223,7 +223,7 @@ function buildPayload() {
       school_status: d.school_status,
       marital_status: d.marital_status,
       employment_status:
-         d.employment_status == null
+        !d.employment_status || d.employment_status === '0'
           ? null
           : parseInt(d.employment_status, 10),
       employment_sector: d.employment_sector ? parseInt(d.employment_sector, 10) : null,
