@@ -33,7 +33,8 @@ def transform_household_input(data: HouseholdInput) -> Dict[str, float]:
         row[m.gender] += 1
         row[age_to_bucket(m.age)] += 1
         edu_counts[m.education] += 1
-        row[m.school_status] += 1
+        if m.age >= 5:
+            row[m.school_status] += 1
         row[m.marital_status] += 1
 
         if m.employment_status is not None and m.employment_sector is not None:

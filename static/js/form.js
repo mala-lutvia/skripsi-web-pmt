@@ -78,6 +78,32 @@ function renderMemberCard(index) {
   const sectorField = wrap.querySelector('.m-sector-field');
   const sectorSelect = wrap.querySelector('.m-sector');
 
+  const ageInput = wrap.querySelector('.m-age');
+  const schoolSelect = wrap.querySelector('.m-school');
+  const schoolField = schoolSelect.closest('.field');
+  const educationSelect = wrap.querySelector('.m-education');
+
+  function updateSchoolVisibility() {
+    const age = parseInt(ageInput.value, 10);
+    const showSchool = Number.isFinite(age) && age >= 5; 
+
+    schoolField.style.display = showSchool ? '' : 'none';
+    schoolSelect.disabled = !showSchool;
+
+    if (!showSchool) {
+      schoolSelect.value = '';
+      educationSelect.value = 'h_notgrad';
+      educationSelect.disabled = true;
+    } else {
+      educationSelect.disabled = false;
+    }
+  }
+
+  ageInput.addEventListener('input', updateSchoolVisibility);
+  ageInput.addEventListener('change', updateSchoolVisibility);
+
+  updateSchoolVisibility();
+
   function updateSectorVisibility() {
     const notWorking =
       empSelect.value === '0' ||
