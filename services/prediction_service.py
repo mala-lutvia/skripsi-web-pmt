@@ -6,28 +6,6 @@ TIDAK melakukan preprocessing / feature engineering apa pun -- itu tugas
 preprocessing/transformer.py yang sudah ada dan TIDAK disentuh di sini.
 
 ============================================================================
-DUA ASUMSI YANG BELUM BISA DIVERIFIKASI TANPA FILE ARTIFACT ASLI — dibuat
-SEJELAS MUNGKIN dan MUDAH DIUBAH, bukan ditebak lalu disembunyikan:
-
-1. URUTAN KOLOM STAGE 2 (BASE_PREDICTORS + p_rentan)
-   Kalau artifact XGBoost-nya sklearn API dan dilatih dengan pandas
-   DataFrame, `get_booster().feature_names` MENYIMPAN urutan asli training
-   -- kode di bawah SELALU cek ini dulu dan pakai urutan itu kalau ada.
-   Fallback (kalau info itu tidak ada di artifact): BASE_PREDICTORS lalu
-   `p_rentan` di kolom terakhir (STAGE2_P_RENTAN_POSITION = "last").
-
-2. TARGET TRANSFORMATION
-   susenas_preprocess.py (skrip training yang kamu lampirkan sebelumnya)
-   menghitung `lpcexp = np.log1p(pcexp)` sebagai salah satu kolom, yang
-   MENGINDIKASIKAN kemungkinan target model adalah log1p(pengeluaran) --
-   tapi ini BUKAN bukti langsung model di-fit ke `lpcexp` (bisa saja
-   fit ke `pcexp` mentah). TARGET_IS_LOG1P di bawah default True dengan
-   asumsi ini, tapi endpoint /api/predict SELALU mengembalikan y_pred_raw
-   (sebelum inverse transform) di response supaya kamu bisa cocokkan
-   sendiri dengan angka di report_xgb_single_2025_timedef.csv /
-   master_xgb_single_2025_timedef.csv milikmu. Kalau ternyata salah,
-   tinggal ubah TARGET_IS_LOG1P jadi False di file ini.
-============================================================================
 """
 
 from __future__ import annotations

@@ -1,10 +1,3 @@
-// ---------------------------------------------------------------------
-// form.js — interaksi form input prediksi.
-// PENTING: JS di sini HANYA membangun UI & mengirim RAW input apa
-// adanya ke /api/preprocess. TIDAK ADA agregasi h_* (h_nmale, h_nage04,
-// h_ngrad_*, dst) dilakukan di sini — semua itu tugas preprocessing
-// existing di backend (preprocessing/transformer.py).
-// ---------------------------------------------------------------------
 
 const MAPPINGS = JSON.parse(document.getElementById('form-mappings').textContent);
 
@@ -347,9 +340,7 @@ form.addEventListener('submit', async (e) => {
   console.log("=== HASIL PREDICT ===");
 console.log(predictData);
 
-// =====================================================
-// HASIL PREDIKSI
-// =====================================================
+// Hasil prediksi
 
 const hasilWrap = document.getElementById('hasil-wrap');
 const hasilKabName = document.getElementById('hasil-kab-name');
@@ -364,9 +355,7 @@ const selectedRegion = regionSelect?.selectedOptions[0];
 hasilKabName.textContent =
   selectedRegion?.textContent?.trim() || predictData.kode_kab;
 
-// =====================================================
 // SINGLE-STAGE
-// =====================================================
 
 if (
   predictData.single_stage &&
@@ -378,9 +367,7 @@ if (
   document.getElementById('rp-single').textContent = '—';
 }
 
-// =====================================================
-// TWO-STAGE
-// =====================================================
+// TWO STAGE
 
 if (
   predictData.two_stage &&
@@ -392,9 +379,7 @@ if (
   document.getElementById('rp-two').textContent = '—';
 }
 
-// =====================================================
-// MODEL FINAL
-// =====================================================
+// MODEL FINA
 
 if (predictData.final_model === 'two_stage') {
   document.getElementById('badge-final').style.display = 'block';
@@ -402,9 +387,7 @@ if (predictData.final_model === 'two_stage') {
   document.getElementById('badge-final').style.display = 'none';
 }
 
-// =====================================================
-// PROBABILITAS RENTAN
-// =====================================================
+// Probabilitas kerentanan
 
 const pRentanPct =
   predictData.two_stage?.p_rentan_pct ?? null;
@@ -434,9 +417,7 @@ if (pRentanPct !== null) {
   gaugeFill.setAttribute('d', '');
 }
 
-// =====================================================
-// MODEL DEBUG
-// =====================================================
+// Model debug
 
   const debugModel = {
     final_model: predictData.final_model,
@@ -447,9 +428,7 @@ if (pRentanPct !== null) {
   document.getElementById('debug-model-json').textContent =
     JSON.stringify(debugModel, null, 2);
 
-  // =====================================================
-  // TAMPILKAN HASIL
-  // =====================================================
+  // Menampilkan hasil prediksi
 
   hasilWrap.style.display = 'block';
 

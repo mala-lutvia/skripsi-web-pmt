@@ -1,30 +1,26 @@
 """
-main.py
-========
-PENTING — PERBAIKAN BUG CSS TIDAK TER-LOAD dari versi sebelumnya:
-StaticFiles(directory="static") dan Jinja2Templates(directory="templates")
-sebelumnya memakai path RELATIF, yang resolusinya tergantung dari
-directory tempat `uvicorn` dijalankan. Kalau dijalankan dari folder lain,
-FastAPI 404 di semua asset, JS, dan CSS -> HTML tampil tanpa styling
-(persis bug yang kamu laporkan).
-
-Perbaikannya: semua path dibangun dari BASE_DIR = lokasi file main.py
-ini sendiri, jadi selalu benar berapa pun current working directory saat
-`uvicorn main:app` dijalankan.
-
-TAHAP INI HANYA: FORM -> VALIDATION -> EXISTING PREPROCESSING -> BASE_PREDICTORS.
-Tidak ada model, training, atau endpoint prediksi (lihat routes/input.py).
+main.py  
+1. Membuat aplikasi FastAPI; 
+2. Menghubungkan file CSS, JS, dan gambar;
+3. Mendaftarkan endpoint API dari folder routes              ;
+4. Menyediakan data mapping untuk form input;
+5. Menentukan halaman HTML yang dikirim ketika user membuka /cerita atau /prediksi
 """
 
 from __future__ import annotations
 
+# path dipakai untuk mencari letak folder static dan templates, agar bisa diakses oleh FastAPI.
 from pathlib import Path
 
+# membuat objek aplikasi web, sedangkan request menerima permintaan dr browser -> request ini dapat dimasukkan ke f. routes
 from fastapi import FastAPI, Request
+# respons route berupa html
 from fastapi.responses import HTMLResponse
+# menyediakan file statis, CSS, JS, Logo, dan gambar
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
+# di dalam routes terdapat router yang mengatur endpoint input dan prediksi, diimpor ke main.py agar bisa dipakai oleh FastAPI.
 from routes.input import router as input_router
 from routes.predict import router as predict_router
 from preprocessing.mappings import (
@@ -46,6 +42,7 @@ templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 app.include_router(input_router)
 app.include_router(predict_router)
 
+# penghubung antara data mapping di preprocessing/mappings.py dengan form input di templates/input.html.
 FORM_MAPPINGS = {
     "gender": GENDER_MAPPING,
     "education": EDUCATION_MAPPING,
@@ -92,7 +89,7 @@ def index(request: Request):
         context={"request": request}
     )
 
-
+# meminta FastAPI untuk merender halaman cerita.html ketika pengguna mengakses endpoint /cerita.
 @app.get("/cerita", response_class=HTMLResponse)
 def cerita_page(request: Request):
     return templates.TemplateResponse(
@@ -101,7 +98,7 @@ def cerita_page(request: Request):
         context={"request": request}
     )
 
-
+# mengiri data pilihan ke template input.html agar bisa membangun dropdown kabupaten/kota dan pilihan lainnya.
 @app.get("/prediksi", response_class=HTMLResponse)
 def input_page(request: Request):
     return templates.TemplateResponse(

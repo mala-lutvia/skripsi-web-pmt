@@ -4,12 +4,9 @@ routes/predict.py
 POST /api/predict — TIPIS, sesuai pola route existing (routes/input.py):
     request -> validation -> existing preprocessing -> prediction service -> response
 
-TIDAK ada logika preprocessing atau model kedua di sini.
 """
 
 from __future__ import annotations
-
-from fastapi import APIRouter
 from pathlib import Path
 
 import logging
@@ -27,12 +24,6 @@ from services.prediction_service import predict_single_stage, predict_two_stage,
 logger = logging.getLogger("pmt.routes.predict")
 router = APIRouter(prefix="/api", tags=["prediksi"])
 
-# Model mana yang ditandai "Digunakan sebagai estimasi akhir" di UI hasil.
-# Dibuat sebagai konfigurasi eksplisit (bukan hardcode di template/JS)
-# supaya gampang diubah kalau konfigurasi penelitian berbeda dari asumsi
-# ini. [PERLU KONFIRMASI] saya set "two_stage" mengikuti reference UI yang
-# kamu kirim (badge ada di kartu Two-Stage) — konfirmasi apakah itu memang
-# model final penelitianmu.
 FINAL_MODEL: Literal["single_stage", "two_stage"] = "two_stage"
 
 
@@ -111,8 +102,7 @@ def predict(payload: PredictRequest):
 
 @router.post("/predict/compare")
 def predict_compare(payload: HouseholdInput):
-    """Jalankan single-stage DAN two-stage sekaligus (untuk result page yang
-    menampilkan kartu perbandingan seperti reference UI kamu)."""
+    """Jalankan single-stage DAN two-stage sekaligus."""
     if payload.region is None:
         raise HTTPException(status_code=400, detail="Kabupaten/kota (region) wajib dipilih untuk menjalankan estimasi.")
     kode_kab = payload.region

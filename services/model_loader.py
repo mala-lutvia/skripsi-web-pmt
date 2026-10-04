@@ -1,29 +1,6 @@
 """
 services/model_loader.py
 ==========================
-Bertugas HANYA: menentukan path artifact -> load pkl -> cache -> kembalikan
-object model. TIDAK melakukan preprocessing, feature engineering, atau
-transformasi target apa pun (itu tugas services/prediction_service.py).
-
-Pola nama file di bawah diambil PERSIS dari screenshot folder yang kamu
-kirim (bukan tebakan):
-
-    output_stage1_logreg_raw/models/logreg_{kode_kab}_raw.pkl
-    output_two_stage_logreg_xgb_raw/models/xgb_two_stage_{kode_kab}_timedef.pkl
-    output_single_stage_xgb_timedef/models/xgb_single_{kode_kab}_timedef.pkl
-
-============================================================================
-CATATAN JUJUR — INI BELUM DIVALIDASI TERHADAP FILE ASLI:
-Saya belum punya file .pkl asli kamu di sandbox ini (cuma lihat nama file
-lewat screenshot). Jadi baris `pickle.load()` di bawah SUDAH BENAR secara
-mekanisme (sudah diuji dengan artifact sklearn dummy, lihat
-tests/test_model_loader.py), TAPI saya belum bisa membuktikan bahwa isi
-pkl asli kamu (object apa yang tersimpan di dalamnya, apakah predict_proba
-tersedia, dst) benar-benar cocok dengan asumsi di sini. Begitu kamu upload
-file aslinya (atau taruh di folder yang sesuai lalu jalankan lokal),
-loader ini akan langsung memberi tahu lewat error yang jelas kalau ada
-yang tidak cocok -- bukan diam-diam salah.
-============================================================================
 """
 
 from __future__ import annotations

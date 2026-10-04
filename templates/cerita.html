@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+<!-- menentukan encoding karakter agar huruf dan simbol ditampilkan dengan benar-->
 <meta charset="UTF-8">
+<!-- memastikan halaman web dapat menyesuaikan tampilannya dengan ukuran layar perangkat yang digunakan -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cerita Singkat — Skripsi PMT</title>
+<!-- menghubungkan halaman HTML dengan file CSS eksternal untuk memberikan gaya pada elemen-elemen di halaman -->
 <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
 </head>
 <body>
@@ -33,6 +36,7 @@
   </div>
 
   <div class="story-shell">
+    <!-- story card adalah area tempat Js menambahkan pesan chat -->
     <div class="story-card" id="storyCard">
       <!-- chat messages injected by JS -->
     </div>
@@ -47,7 +51,7 @@
 
 <script>
 const AVATAR = "{{ url_for('static', path='assets/avatar_lutvia.png') }}";
-
+// script array berisi percakapan antara bot dan user, yang akan ditampilkan secara berurutan di halaman cerita
 const script = [
   { from: "bot", text: "Halo! Saya Lutvia. Pernah kepikiran nggak, gimana caranya mengetahui kondisi ekonomi sebuah rumah tangga kalau penghasilannya nggak mudah diketahui?" },
   { from: "user", text: "Belum. Gimana tuhh??" },
@@ -60,11 +64,11 @@ const script = [
 
 const card = document.getElementById("storyCard");
 let step = 0;
-
+// membuat elemen chat-row untuk setiap pesan, menambahkan avatar untuk pesan dari bot, dan menambahkan bubble berisi teks pesan
 function renderRow(msg) {
   const row = document.createElement("div");
   row.className = "chat-row" + (msg.from === "user" ? " user" : "");
-
+  // menambahkan avatar untuk pesan dari bot
   if (msg.from === "bot") {
     const img = document.createElement("img");
     img.src = AVATAR;
@@ -80,7 +84,7 @@ function renderRow(msg) {
 
   card.appendChild(row);
 }
-
+// menampilkan petunjuk untuk melanjutkan percakapan
 function renderContinueHint() {
   const hint = document.createElement("div");
   hint.className = "chat-continue";
@@ -89,7 +93,7 @@ function renderContinueHint() {
   hint.addEventListener("click", advance);
   card.appendChild(hint);
 }
-
+// menampilkan tombol CTA untuk melanjutkan ke halaman prediksi setelah percakapan selesai
 function renderCTA() {
   const cta = document.createElement("div");
   cta.className = "story-cta";
@@ -97,6 +101,7 @@ function renderCTA() {
   card.appendChild(cta);
 }
 
+// mengatur giliran percakapan, menampilkan pesan berikutnya dari script, dan menghapus petunjuk klik jika ada
 function advance() {
   const hint = document.getElementById("continueHint");
   if (hint) hint.remove();
