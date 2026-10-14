@@ -1,6 +1,6 @@
 # Skripsi PMT — Input & Preprocessing (Website Terintegrasi)
 
-Melanjutkan project existing (bukan project baru). Preprocessing existing
+Preprocessing existing
 (`preprocessing/` — constants/mappings/validator/transformer) TIDAK diganti
 dari sesi sebelumnya, hanya disesuaikan nama field schema (lihat bagian C).
 Fokus tahap ini: **FORM → VALIDATION → EXISTING PREPROCESSING → BASE_PREDICTORS → STOP.**
@@ -205,20 +205,4 @@ browser headless untuk screenshot) — jadi status ini saya laporkan sebagai
 kamu setelah dijalankan; struktur CSS-nya sudah disiapkan tapi saya tidak
 mau bilang "sudah responsive" tanpa benar-benar melihatnya.
 
----
 
-## Yang TIDAK dikerjakan (sesuai instruksi "STOP setelah BASE_PREDICTORS")
-
-`routes/predict.py` dan folder model dari sesi sebelumnya **sengaja
-dihapus** dari project ini — instruksi terbaru eksplisit melarang
-`predict()`/`predict_proba()`/Stage 1/Stage 2 di tahap ini. Kalau nanti
-lanjut ke integrasi model, itu jadi tahap terpisah berikutnya.
-
-## PERLU_KONFIRMASI (belum berubah dari sesi sebelumnya)
-
-Field berikut fungsional tapi labelnya masih placeholder karena skrip
-training tidak menyertakan definisi teks eksplisit — lihat komentar
-`[PERLU KONFIRMASI]` di `preprocessing/mappings.py`:
-status pekerjaan (kode 1-8), nama sektor per grup, jenis rumah
-(`h_house1-4`), jenis septic tank, dan label `h_toiltype2` vs `h_toiltype4`
-yang identik teksnya ("Ada & Tutup").
